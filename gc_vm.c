@@ -1,4 +1,5 @@
 #include "vm.h"
+#include <stdlib.h>
 
 vm_t *vm_new() {
   vm_t *vm = malloc(sizeof(vm_t));
@@ -22,9 +23,9 @@ vm_t *vm_new() {
 }
 
 void vm_free(vm_t *vm) {
-  if (vm) {
-    stack_free(vm->frames);
-    stack_free(vm->objects);
-    free(vm);
+  if (vm == NULL) {
+    return;
   }
+  gc_stack_free(vm->frames);
+  gc_stack_free(vm->objects);
 }
