@@ -33,24 +33,16 @@ typedef union GC_Object_Data {
 } gc_object_data_t;
 
 typedef struct GC_Object {
-  int ref_count;
+  bool is_marked;
   gc_object_type_t type;
   gc_object_data_t data;
 } gc_object_t;
-
-gc_object_t *new_gc_integer(int value);
-gc_object_t *new_gc_float(float value);
-gc_object_t *new_gc_string(char *value);
-gc_object_t *new_gc_vector3(gc_object_t *x, gc_object_t *y, gc_object_t *z);
-gc_object_t *new_gc_array(size_t size);
 
 bool gc_array_set(gc_object_t *gc_obj, size_t index, gc_object_t *value);
 gc_object_t *gc_array_get(gc_object_t *gc_obj, size_t index);
 
 int gc_length(gc_object_t *obj);
-gc_object_t *gc_add(gc_object_t *a, gc_object_t *b);
 
 void ref_count_inc(gc_object_t *obj);
 void ref_count_dec(gc_object_t *obj);
 void ref_count_free(gc_object_t *obj);
-
