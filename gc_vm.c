@@ -8,12 +8,8 @@ void gc_mark(gc_vm_t *vm) {
 
   for (int i = 0; i < vm->frames->count; i++) {
     gc_frame_t *frame = vm->frames[i];
-    if (frame == NULL) { continue; }
-
     for (int j = 0; j < frame->references->count; j++) {
-      gc_object_t *obj = frame->references->data[j];
-      if (obj == NULL) { continue; }
-      obj->is_marked = true;
+      frame->references->data[j]-> = true;
     }
   }
   
