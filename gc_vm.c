@@ -151,16 +151,19 @@ void gc_vm_free(gc_vm_t *vm) {
     return;
   }
 
+  // Libertar os frames do stack, e os conteudos de cada um
   for (int i = 0; i < vm->frames->count; i++) {
     gc_vm_free_frame(vm->frames->data[i]);
   }
   gc_stack_free(vm->frames);
 
+  // Libertar os objetos, e os conteudos de cada um
   for (int i = 0; i < vm->objects->count; i++) {
     gc_object_free(vm->frames->data[i]);
   }
   gc_stack_free(vm->objects);
 
+  // Libertar a VM
   free(vm);
 }
 
