@@ -56,13 +56,17 @@ gc_stack_t *gc_stack_new(size_t capacity) {
 void gc_stack_remove_nulls(gc_stack_t *stack) {
   size_t new_count = 0;
 
+  // Iterar o stack à procura de apontadores nao nulos
   for (size_t i = 0; i < stack->count; i++) {
     if (stack->data[i] != NULL) {
       stack->data[new_count++] = stack->data[i];
     }
   }
+
+  // Atualizar a contagem dos elementos
   stack->count = new_count;
 
+  // Zerar os elementos na nova contagem do stack
   for (size_t i = new_count; i < stack->capacity; i++) {
     stack->data[i] = NULL;
   }

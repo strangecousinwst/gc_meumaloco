@@ -114,11 +114,6 @@ bool gc_array_set(gc_object_t *gc_obj, size_t index, gc_object_t *value) {
     return false;
   }
 
-  ref_count_inc(value);
-  if (gc_obj->data.v_array.elements[index] != NULL) {
-    ref_count_dec(gc_obj->data.v_array.elements[index]);
-  }
-
   gc_obj->data.v_array.elements[index] = value;
 
   return true;

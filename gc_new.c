@@ -13,8 +13,12 @@ gc_object_t *_new_gc_object(gc_vm_t *vm) {
     return NULL;
   }
 
+  // tracking do objeto
   gc_vm_track_object(vm, obj);
+  //
+  // Inicializar como nao marcado
   obj->is_marked = false;
+
   return obj;
 }
 
@@ -23,28 +27,39 @@ gc_object_t *gc_add(gc_vm_t *vm, gc_object_t *a, gc_object_t *b) {
     return NULL;
   }
 
+  // Casos particulares da adicionar 2 objetos
   switch (a->type) {
+    // Caso a seja integer
   case INTEGER: {
     switch (b->type) {
+      // E b seja integer tambem
     case INTEGER:
       return new_gc_integer(vm, a->data.v_int + b->data.v_int);
+      // E b seja float
     case FLOAT:
       return new_gc_float(vm, (float)a->data.v_int + b->data.v_float);
+      // Se b nao for integer ou float return null
     default:
       return NULL;
     }
   }
+    // Caso a seja float
   case FLOAT: {
     switch (b->type) {
+      // E b seja integer
     case INTEGER:
       return new_gc_float(vm, a->data.v_float + (float)b->data.v_int);
+      // E b seja float
     case FLOAT:
       return new_gc_float(vm, a->data.v_float + b->data.v_float);
+      // Se b nao for integer ou float return null
     default:
       return NULL;
     }
   }
+    // Caso a seja string
   case STRING: {
+    // Se b nao for string tambem return null
     if (b->type != STRING) {
       return NULL;
     }
@@ -56,7 +71,9 @@ gc_object_t *gc_add(gc_vm_t *vm, gc_object_t *a, gc_object_t *b) {
     free(str);
     return obj;
   }
+    // Caso a seja vector3
   case VECTOR3: {
+    // Se b nao for vector3 tambem return null
     if (b->type != VECTOR3) {
       return NULL;
     }
@@ -65,7 +82,9 @@ gc_object_t *gc_add(gc_vm_t *vm, gc_object_t *a, gc_object_t *b) {
                           gc_add(vm, a->data.v_vector3.y, b->data.v_vector3.y),
                           gc_add(vm, a->data.v_vector3.z, b->data.v_vector3.z));
   }
+    // Caso a seja array
   case ARRAY: {
+    // Se b nao for array tambem return null
     if (b->type != ARRAY) {
       return NULL;
     }
@@ -117,9 +136,6 @@ gc_object_t *new_gc_vector3(gc_vm_t *vm, gc_object_t *x, gc_object_t *y,
   }
 
   obj->type = VECTOR3;
-  ref_count_inc(x);
-  ref_count_inc(y);
-  ref_count_inc(z);
   obj->data.v_vector3 = (gc_vector_t){.x = x, .y = y, .z = z};
 
   gc_vm_track_object(vm, obj);

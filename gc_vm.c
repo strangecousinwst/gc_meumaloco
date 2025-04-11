@@ -103,6 +103,10 @@ void gc_mark(gc_vm_t *vm) {
   }
 }
 
+void gc_vm_track_object(gc_vm_t *vm, gc_object_t *obj) {
+  gc_stack_push(vm->objects, obj);
+}
+
 void gc_vm_frame_reference_object(gc_frame_t *frame, gc_object_t *obj) {
   if (frame == NULL || obj == NULL) {
     return;
