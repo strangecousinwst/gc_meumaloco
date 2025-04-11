@@ -8,30 +8,28 @@
 
 gc_object_t *_new_gc_object(gc_vm_t *vm) {
   gc_object_t *obj = calloc(1, sizeof(gc_object_t));
-  if (obj == NULL) {
-    return NULL;
-  }
+  if (obj == NULL) { return NULL;}
 
   gc_vm_track_object(vm, obj);
   obj->is_marked = false;
   return obj;
 }
 
-gc_object_t *gc_add(gc_object_t *a, gc_object_t *b) {
+gc_object_t *gc_add(gc_vm_t *vm, gc_object_t *a, gc_object_t *b) {
   if (a == NULL || b == NULL) { return NULL; }
 
   switch (a->type) {
     case INTEGER: {
       switch (b->type) {
-        case INTEGER: return new_gc_integer(a->data.v_int + b->data.v_int);
-        case FLOAT: return new_gc_float((float)a->data.v_int + b->data.v_float);
+        case INTEGER: return new_gc_integer(vm, a->data.v_int + b->data.v_int);
+        case FLOAT: return new_gc_float(vm, (float)a->data.v_int + b->data.v_float);
         default: return NULL;
       }
     }
     case FLOAT: {
       switch (b->type) {
-        case INTEGER: return new_gc_float(a->data.v_float + (float)b->data.v_int);
-        case FLOAT: return new_gc_float(a->data.v_float + b->data.v_float);
+        case INTEGER: return new_gc_float(vm, a->data.v_float + (float)b->data.v_int);
+        case FLOAT: return new_gc_float(vm, a->data.v_float + b->data.v_float);
         default: return NULL;
       }
     }
@@ -41,13 +39,14 @@ gc_object_t *gc_add(gc_object_t *a, gc_object_t *b) {
       char *str = calloc(sizeof(char), len);
       strcat(str, a->data.v_string);
       strcat(str, b->data.v_string);
-      gc_object_t *obj = new_gc_string(str);
+      gc_object_t *obj = new_gc_string(vm, str);
       free(str);
       return obj;
     }
     case VECTOR3: {
       if (b->type != VECTOR3) { return NULL; }
       return new_gc_vector3(
+        vm,
         gc_add(a->data.v_vector3.x, b->data.v_vector3.x),
         gc_add(a->data.v_vector3.y, b->data.v_vector3.y),
         gc_add(a->data.v_vector3.z, b->data.v_vector3.z)
@@ -56,7 +55,7 @@ gc_object_t *gc_add(gc_object_t *a, gc_object_t *b) {
     case ARRAY: {
       if (b->type != ARRAY) { return NULL; }
       size_t len = a->data.v_array.size + b->data.v_array.size;
-      gc_object_t *obj = new_gc_array(len);
+      gc_object_t *obj = new_gc_array(vm, len);
       
       for (size_t i = 0; i < a->data.v_array.size; i++){
         gc_array_set(obj, i, gc_array_get(a, i));

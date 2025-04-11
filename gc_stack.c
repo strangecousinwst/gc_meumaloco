@@ -38,3 +38,18 @@ gc_stack_t *gc_stack_new(size_t capacity) {
 
   return stack;
 }
+
+void gc_stack_remove_nulls(gc_stack_t *stack) {
+  size_t new_count = 0;
+
+  for (size_t i = 0; i < stack->count; i++) {
+    if (stack->data[i] != NULL) {
+      stack->data[new_count++] = stack->data[i];
+    }
+  }
+  stack->count = new_count;
+
+  for (size_t i = new_count; i < stack->capacity; i++) {
+    stack->data[i] = NULL;
+  }
+}

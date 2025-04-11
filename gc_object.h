@@ -1,3 +1,7 @@
+#pragma once
+
+#include "gc_stack.h"
+
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -37,6 +41,8 @@ typedef struct GC_Object {
   gc_object_type_t type;
   gc_object_data_t data;
 } gc_object_t;
+
+void gc_object_free(gc_object_t *obj);
 
 bool gc_array_set(gc_object_t *gc_obj, size_t index, gc_object_t *value);
 gc_object_t *gc_array_get(gc_object_t *gc_obj, size_t index);
