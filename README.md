@@ -1,13 +1,12 @@
-#GC_MeuMaloco
 # Projeto Gestor de memória em C
+
+### gc_meumaloco
 
 ## Objetivo
 
-* Desenvolver um garbage collector para a linguagem C, utilizando o algoritmo mark-and-sweep para gerir automaticamente a memória alocada, e libertar a não utilizada.
+* O objetivo com este projeto é estudar e investigar a gestão de memória em linguagens de programação como Java, Python, etc..
 
-* O objetivo com este projeto é estudar e investigar a gestão de memória, documentar o processo, e disso tudo resultar a criação de uma API que permita fazer operações semelhantes às de um garbage collector como aqueles que se encontram em linguagens de programação como Java, Python, etc..
-
-* Este objetivo surge de uma grande curiosidade para perceber melhor como funciona a memória por detrás de todas as abstrações que as linguagens modernas nos fornecem.
+* Este objetivo surge da curiosidade em perceber melhor o funcionamento da memória por detrás de todas as abstrações que as linguagens modernas nos fornecem.
 
 * Para este fim, vou estudar como foram implementados garbage collectors noutras linguagens, algoritmos como mark-and-sweep, o funcionamento do heap e do stack.
 
@@ -36,15 +35,11 @@ Esta tarefa é feita de modo automático e dinâmica pelo Garbage Collector.
 
 * Editor de texto: Nvim --version 0.11.0
 
-* Geração de executáveis: Gmake --version 4.4.1
-
 ## Análise de dados
 
 * O projeto trabalhará com estruturas de dados para gerir a memória.
 
-* Será implementada uma lista ligada para rastrear todos os objetos alocados, arrays para manter referências e raízes, e um sistema de marcação para identificar objetos alcançáveis.  
-
-* O coletor deverá guardar dados como memória total alocada, memória disponível, número de objetos geridos, e número de coletas realizadas.
+* Serão implementadas estruturas de dados para rastrear para rastrear todos os objetos alocados, para manter referências, raízes, e um sistema de marcação para identificar objetos alcançáveis.  
 
 ## Análise de processos
 
@@ -64,29 +59,17 @@ Esta tarefa é feita de modo automático e dinâmica pelo Garbage Collector.
 
     * Rastreamento de referências,
 
-    * Liberação de memória.
-
-3. **Documentação:**
-
-    * Adicionar comentrios e documentação em português.
-
-4. **Criação de Exemplos:**  
-
-    * Demonstrar o uso do coletor de lixo com exemplos simples e complexos.
-
-5. **Instruções de Compilação e Execução:**
-
-    * Criar um Makefile para facilitar a compilação e execução dos exemplos.
+    * Libertamento de memória.
 
 ## Dicionário
 
 1. **Garbage Collector:**
 
-    * Componente que gere automaticamente a memória alocada, liberando memória não utilizada.
+    * Componente que faz gestão automatica da memória alocada, libertando memória não utilizada.
 
 2. **Mark-and-Sweep:**
 
-    * Algoritmo utilizado para identificar e liberar memória não utilizada.
+    * Algoritmo utilizado para identificar e libertar memória não utilizada.
 
 3. **Raiz:**
 
@@ -106,7 +89,7 @@ Esta tarefa é feita de modo automático e dinâmica pelo Garbage Collector.
 
 ## Namespaces
 
-* O projeto será estruturado em múltiplos ficheiros C, utilizando header files para definir a API pública e os header files internos para as definições das funções.
+* O projeto será estruturado em múltiplos ficheiros C, utilizando header files para definir as funções e as estruturas de dados.
 
 * Em C não há namespaces específicos como em C++, mas a modularidade será mantida através da separação de arquivos.
 
@@ -116,44 +99,18 @@ Esta tarefa é feita de modo automático e dinâmica pelo Garbage Collector.
 
 1. **Estruturas:**
 
-    **GC:** Estrutura principal do coletor de lixo.
+    `gc_object_t` Estrutura principal do coletor de lixo, guarda os objetos geridos pelo nosso garbage collector
 
-    **GCObject:** Estrutura que representa um objeto gerido pelo coletor de lixo.
+    `gc_stack_t` Estrutura utilizada para guardar objetos dentro de um frame na maquina virtual.
+
+    `gc_vm_t` Estrutura utilizada para contar referencias entre objetos que pertecem ao stack.
 
 2. **Funções:**
 
-    * **Inicialização e Finalização:**
+    `gc_collect_garbage(gc_vm_t *vm)`
 
-    `gc_inicializar(tamanho_heap);`
+    `gc_trace(gc_vm_t *vm)`
 
-    `gc_finalizar(GC);`
+    `gc_mark(gc_vm_t *vm)`
 
-    * **Alocação de Memória:**
-
-    `gc_alocar(GC);`
-
-    * **Gerenciamento de Raízes:**
-
-    `gc_registrar_raiz(GC, raiz);`
-
-    `gc_remover_raiz(GC, raiz);`
-
-    * **Gerenciamento de Referências:**
-
-    `gc_registrar_referencia(GC, de, para);`
-
-    * **Coleta de Lixo:**
-
-    `gc_coletar(GC);`
-
-    * **Estatísticas:**
-
-    `gc_estatisticas(GC, total_alocado, total_livre, num_objetos);`
-
-## Outras informações
-
-1. Documentação:
-    * A documentação será fornecida em português, incluindo um README.md e um manual.
-
-2. Exemplos:
-    * Serão fornecidos exemplos para demonstrar o uso do coletor de lixo.
+    `gc_sweep(gc_vm_t *vm)`

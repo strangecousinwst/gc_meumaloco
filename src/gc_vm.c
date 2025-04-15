@@ -187,14 +187,3 @@ gc_vm_t *vm_new() {
 
   return vm;
 }
-
-// FIX : New free implemented?
-// void gc_vm_free(gc_vm_t *vm) {
-//   if (vm == NULL) {
-//     return;
-//   }
-//
-//   gc_stack_free(vm->frames);
-//   gc_stack_free(vm->objects);
-//   free(vm);
-// }

@@ -56,7 +56,3 @@ gc_object_t *gc_array_get(gc_object_t *gc_obj, size_t index);
 
 // Funçao para sacar o comprimento de um objeto
 int gc_length(gc_object_t *obj);
-
-// void ref_count_inc(gc_object_t *obj);
-// void ref_count_dec(gc_object_t *obj);
-// void ref_count_free(gc_object_t *obj);
